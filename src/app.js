@@ -33,8 +33,8 @@ app.get("/tweets", (req, res) => {
             if (index >= posicaoInicial && index < posicaoFinal) {
                 enviarTweets.push(
                     {
-                        avatar: usuarios.find(u => u.username === t.username).avatar,
                         username: t.username,
+                        avatar: usuarios.find(u => u.username === t.username).avatar,
                         tweet: t.tweet
                     });
             }
