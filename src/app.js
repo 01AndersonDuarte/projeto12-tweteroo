@@ -16,16 +16,38 @@ app.post("/sign-up", (req, res) => {
 });
 
 app.get("/tweets", (req, res) => {
-    res.send(tweets.map((t)=> ({avatar: usuarios.find(u=>u.username===t.username).avatar, username: t.username, tweet: t.tweet})))
+    const { page } = req.query;
+    const maxTweets = 10;
+
+    const posicaoFinal = page * maxTweets;
+    const posicaoInicial = 10 * (page - 1);
+
+    const tweetsInvertidos = tweets.map(t => t);
+    const enviarTweets = [];
+    tweetsInvertidos.reverse();
+
+    if (tweets.length === 0) {
+        return res.send(tweetsInvertidos);
+    } else {
+        tweetsInvertidos.filter((t, index) => {
+            if (index >= posicaoInicial && index < posicaoFinal) {
+                enviarTweets.push(
+                    {
+                        avatar: usuarios.find(u => u.username === t.username).avatar,
+                        username: t.username,
+                        tweet: t.tweet
+                    });
+            }
+        });
+        return res.send(enviarTweets);
+    }
 });
 app.post("/tweets", (req, res) => {
     const { user } = req.headers;
     const { tweet } = req.body;
 
-    console.log(user);
-    console.log("BOLL: " + usuarios.find(u => u.username === user));
     if (usuarios.find(u => u.username === user)) {
-        tweets.push({username: user, tweet: tweet});
+        tweets.push({ username: user, tweet: tweet });
         return res.status(201).send("OK");
     }
     res.sendStatus(401);
