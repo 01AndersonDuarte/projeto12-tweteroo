@@ -23,10 +23,26 @@ app.post("/sign-up", (req, res) => {
     res.status(201).send("OK");
 });
 
+app.get("/tweets/:USERNAME", (req, res)=>{
+    const usuario = req.params.USERNAME;
+    const enviarTweets = [];
+
+    tweets.filter(t => {
+        if (t.username===usuario) {
+            enviarTweets.push(
+                {
+                    username: t.username,
+                    avatar: usuarios.find(u => u.username === t.username).avatar,
+                    tweet: t.tweet
+                });
+        }
+    });
+    res.send(enviarTweets);
+});
 app.get("/tweets", (req, res) => {
     let { page } = req.query;
     const maxTweets = 10;
-    
+
     if (page === undefined) {
         page = 1;
     } else if (page < 1) {
