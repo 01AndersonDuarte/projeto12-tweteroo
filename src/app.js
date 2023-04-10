@@ -27,8 +27,10 @@ app.get("/tweets", (req, res) => {
     let { page } = req.query;
     const maxTweets = 10;
     
-    if(page===undefined){
+    if (page === undefined) {
         page = 1;
+    } else if (page < 1) {
+        return res.status(400).send("Informe uma página válida!");
     }
 
     const posicaoFinal = page * maxTweets;
@@ -48,25 +50,8 @@ app.get("/tweets", (req, res) => {
                 });
         }
     });
-    // console.log(enviarTweets);
     return res.send(enviarTweets);
 
-    // if (tweets.length === 0) {
-    //     return res.send(tweetsInvertidos);
-    // } else {
-    //     tweetsInvertidos.filter((t, index) => {
-    //         if (index >= posicaoInicial && index < posicaoFinal) {
-    //             enviarTweets.push(
-    //                 {
-    //                     username: t.username,
-    //                     avatar: usuarios.find(u => u.username === t.username).avatar,
-    //                     tweet: t.tweet
-    //                 });
-    //         }
-    //     });
-    //     console.log(enviarTweets);
-    //     return res.send(enviarTweets);
-    // }
 });
 app.post("/tweets", (req, res) => {
     const { user } = req.headers;
