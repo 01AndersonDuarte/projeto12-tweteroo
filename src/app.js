@@ -72,7 +72,7 @@ app.post("/tweets", (req, res) => {
         typeof (user) !== 'string' || typeof (tweet) !== 'string' ||
         user === "" || tweet === "") {
 
-        return res.sendStatus(401);
+        return res.sendStatus(400);
 
     } else if (usuarios.find(u => u.username === user)) {
         tweets.push({ username: user, tweet: tweet });
