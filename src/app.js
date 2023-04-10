@@ -24,8 +24,12 @@ app.post("/sign-up", (req, res) => {
 });
 
 app.get("/tweets", (req, res) => {
-    const { page } = req.query;
+    let { page } = req.query;
     const maxTweets = 10;
+    
+    if(page===undefined){
+        page = 1;
+    }
 
     const posicaoFinal = page * maxTweets;
     const posicaoInicial = 10 * (page - 1);
